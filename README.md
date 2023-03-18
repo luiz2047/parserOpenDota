@@ -1,25 +1,30 @@
-# OpenDota Full Matches Parser
+# OpenDota Match Data Parser
 
-This project is a Python script for parsing full match data from the OpenDota API, using a list of match IDs stored in a text file. The parsed data is saved in a JSON file for further analysis.
+This Python script uses the OpenDota API to parse full matches data and save it as JSON files. It includes proxy support to avoid rate limiting and enhance performance.
+
 ## Getting Started
 
-To use this script, you will need to have Python 3.x installed on your system, along with the necessary dependencies. You can install the dependencies by running the following command in your terminal:
+1. Clone this repository to your local machine.
+2. Install the required dependencies using pip: ```pip install -r requirements.txt```
+3. Create a file named ```matches_ids.txt``` in the same directory as the main.py file. Put each match ID on a separate line in this file.
+4. Run the script with the desired number of workers: ```python main.py -n [num_workers]```
 
-```pip install -r requirements.txt```
+## Arguments
 
-You will also need to obtain a list of match IDs from OpenDota and save them in a text file named ***`matches_ids.txt`***.
-## Usage
+- -n, --num_workers: the number of workers to use for parsing. Default is 128.
 
-To run the script, open a terminal window in the project directory and enter the following command:
+## Output
 
-```python main.py -n NUM_WORKERS```
+The parsed JSON files will be saved in the `data` folder, with filenames corresponding to the match IDs.
 
-Replace **`NUM_WORKERS`** with the desired number of worker processes to use for parsing. The default value is 16.
+## Proxy Support
 
-The script will start parsing the matches using external proxies, which will be obtained automatically. The parsed data will be saved in a file named **`full_matches.json`**.
-## Contributing
+This script includes proxy support to avoid rate limiting and enhance performance. The script will automatically cycle through a list of free proxies obtained from the `proxy` module. If a proxy fails, the script will try the next one in the list.
 
-Contributions to this project are welcome! If you find a bug or have an idea for a new feature, feel free to open an issue or submit a pull request.
+## Logging
+
+The script logs debugging and error messages to the `logs.log` file in the same directory as the `main.py` file.
+
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License. See the LICENSE file for more information.
