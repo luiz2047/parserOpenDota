@@ -1,21 +1,22 @@
-from imports import *
+from proxy import *
 import worker
 import argparse
 
 logging.basicConfig(filename='logs.log', encoding='utf-8', level=logging.DEBUG,
-                    format='%(asctime)s %(name)-30s %(levelname)-8s %(message)s',
+                    format='%(asctime)s %(name)-8s %(levelname)-8s %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S')
 
 urllib3.disable_warnings()
 
 
 def main(num_workers):
-    free_proxies = proxy.get_free_proxies()
+    free_proxies = get_free_proxies()
     jobs = []
     job_queue = multiprocessing.Queue()
     with multiprocessing.Manager() as manager:
+        shared_free_proxies = manager.list(free_proxies)
         for i in range(num_workers):
-            p = worker.Worker(job_queue, free_proxies)
+            p = worker.Worker(job_queue, shared_free_proxies)
             jobs.append(p)
             p.start()
 
@@ -36,6 +37,7 @@ if __name__ == "__main__":
         description="""Parsing full matches data using external proxy from OpenDotaAPI 
         using matches_ids.txt file and save it in full_matches.json file"""
     )
-    parser.add_argument('-n', '--num_workers', type=int, default=16, help="Num workers for parsing")
+    parser.add_argument('-n', '--num_workers', type=int, default=128,
+                        help="Num workers for parsing")
     args = parser.parse_args()
     main(args.num_workers)

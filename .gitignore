@@ -4,3 +4,5 @@ full_matches.json
 logs.log
 matches_ids.txt
 __pycache__
+test.py
+data/*.json
