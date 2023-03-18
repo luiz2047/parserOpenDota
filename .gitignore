@@ -1,0 +1,6 @@
+venv
+.idea
+full_matches.json
+logs.log
+matches_ids.txt
+__pycache__
